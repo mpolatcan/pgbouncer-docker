@@ -122,6 +122,6 @@ RUN apt-get update && \
     make -f pgbouncer-${PGBOUNCER_VERSION}/Makefile && \
     make -f pgbouncer-${PGBOUNCER_VERSION}/Makefile install && \
     rm -r pgbouncer-${PGBOUNCER_VERSION}.* && \
-    mkdir -p ${PGBOUNCER_CONFIG_HOME}
+    mkdir -p ${PGBOUNCER_CONF_DIR}
 
 ENTRYPOINT ["./pgbouncer_entrypoint.sh"]

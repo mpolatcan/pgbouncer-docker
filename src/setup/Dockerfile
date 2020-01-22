@@ -5,7 +5,7 @@ ARG PGBOUNCER_DOWNLOAD_LINK="https://www.pgbouncer.org/downloads/files/${PGBOUNC
 
 MAINTAINER Mutlu Polatcan <mutlupolatcan@gmail.com>
 
-ENV PGBOUNCER_CONF_DIR="/pgbouncer_conf"
+ENV PGBOUNCER_CONF_DIR="/pgbouncer_conf" \
 	PGBOUNCER_LOGFILE="NULL" \
 	PGBOUNCER_PIDFILE="NULL" \
 	PGBOUNCER_LISTEN_ADDR="*" \

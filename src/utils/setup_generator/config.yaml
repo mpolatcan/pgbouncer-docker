@@ -6,7 +6,7 @@ dockerfile_template: |
 
   MAINTAINER Mutlu Polatcan <mutlupolatcan@gmail.com>
 
-  ENV PGBOUNCER_CONF_DIR="/pgbouncer_conf"
+  ENV PGBOUNCER_CONF_DIR="/pgbouncer_conf" \
   {env_vars}
 
   ADD config_loader.sh ./pgbouncer_config_loader.sh

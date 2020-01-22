@@ -1,0 +1,22 @@
+name: pgbouncer-docker (master)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-setup-image:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repository: [pgbouncer]
+        pgbouncer_version: [1.12.0, 1.11.0, 1.10.0, 1.9.0]
+    steps:
+      - uses: actions/checkout@v1
+      - run: echo ${{secrets.DOCKER_PASSWORD}} | docker login -u ${{secrets.DOCKER_USERNAME}} --password-stdin
+      - run: docker build -q
+          -t ${{secrets.DOCKER_USERNAME}}/${{matrix.repository}}:${{matrix.pgbouncer_version}}
+          --build-arg PGBOUNCER_VERSION=${{matrix.pgbouncer_version}}
+          src/setup
+      - run: docker push ${{secrets.DOCKER_USERNAME}}/${{matrix.repository}}:${{matrix.pgbouncer_version}}

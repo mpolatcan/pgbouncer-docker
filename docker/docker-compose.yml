@@ -8,7 +8,7 @@ services:
     container_name: pgbouncer
     hostname: pgbouncer
     environment:
-      PGBOUNCER_DATABASES: >
+      PGBOUNCER_DATABASES: |
         postgres = host=postgres port=5432 dbname=postgres user=postgres password=postgres
       PGBOUNCER_IGNORE_STARTUP_PARAMETERS: extra_float_digits
     ports:

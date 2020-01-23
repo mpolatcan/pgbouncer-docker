@@ -109,16 +109,10 @@ load_config "tcp_keepintvl" "${PGBOUNCER_TCP_KEEPINTVL}" "pgbouncer.ini"
 
 if [[ "${PGBOUNCER_DATABASES}" != "NULL" ]]; then
   printf "\n[databases]\n" >> "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
-
-  for DATABASE in ${PGBOUNCER_DATABASES[@]}; do
-    load_user_or_db "$DATABASE" "pgbouncer.ini"
-  done
+  load_user_or_db "${PGBOUNCER_DATABASES}" "pgbouncer.ini"
 fi
 
 if [[ "${PGBOUNCER_USERS}" != "NULL" ]]; then
   printf "\n[users]\n" >> "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
-
-  for USER in ${PGBOUNCER_USERS[@]}; do
-    load_user_or_db "$USER" "pgbouncer.ini"
-  done
+  load_user_or_db "${PGBOUNCER_USERS}" "pgbouncer.ini"
 fi

@@ -3,34 +3,34 @@
 function load_config() {
     if [[ "$2" != "NULL" ]]
         then
-            printf "$1 = $2\n" >> "${PGBOUNCER_CONF_DIR}/$3"
+            printf "$1 = $2\n" >> "${PGBOUNCER_DIR}/$3"
     fi
 }
 
 function load_config_with_opt() {
     if [[ "$2" != "NULL" ]]
         then
-            printf "$1 = $3\n" >> "${PGBOUNCER_CONF_DIR}/$5"
+            printf "$1 = $3\n" >> "${PGBOUNCER_DIR}/$5"
     else
-        printf "$1 = $4\n" >> "${PGBOUNCER_CONF_DIR}/$5"
+        printf "$1 = $4\n" >> "${PGBOUNCER_DIR}/$5"
     fi
 }
 
-function load_user_or_db() {
-    printf "$1" >> "${PGBOUNCER_CONF_DIR}/$2"
+function load_env() {
+    printf "$1" >> "${PGBOUNCER_DIR}/$2"
 }
 
 
 printf "\n[pgbouncer]\n" > "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
-load_config "logfile" "${PGBOUNCER_LOGFILE}" "pgbouncer.ini"
-load_config "pidfile" "${PGBOUNCER_PIDFILE}" "pgbouncer.ini"
+load_config "logfile" "${PGBOUNCER_DIR}/pgbouncer.log" "pgbouncer.ini"
+load_config "pidfile" "${PGBOUNCER_DIR}/pgbouncer.dir" "pgbouncer.ini"
 load_config "listen_addr" "${PGBOUNCER_LISTEN_ADDR}" "pgbouncer.ini"
 load_config "listen_port" "${PGBOUNCER_LISTEN_PORT}" "pgbouncer.ini"
 load_config "unix_socket_dir" "${PGBOUNCER_UNIX_SOCKET_DIR}" "pgbouncer.ini"
 load_config "unix_socket_mode" "${PGBOUNCER_UNIX_SOCKET_MODE}" "pgbouncer.ini"
 load_config "unix_socket_group" "${PGBOUNCER_UNIX_SOCKET_GROUP}" "pgbouncer.ini"
 load_config "user" "${PGBOUNCER_USER}" "pgbouncer.ini"
-load_config "auth_file" "${PGBOUNCER_AUTH_FILE}" "pgbouncer.ini"
+load_config "auth_file" "${PGBOUNCER_DIR}/pgbouncer_users.txt" "pgbouncer.ini"
 load_config "auth_hba_file" "${PGBOUNCER_AUTH_HBA_FILE}" "pgbouncer.ini"
 load_config "auth_type" "${PGBOUNCER_AUTH_TYPE}" "pgbouncer.ini"
 load_config "auth_query" "${PGBOUNCER_AUTH_QUERY}" "pgbouncer.ini"
@@ -47,7 +47,7 @@ load_config "server_round_robin" "${PGBOUNCER_SERVER_ROUND_ROBIN}" "pgbouncer.in
 load_config "ignore_startup_parameters" "${PGBOUNCER_IGNORE_STARTUP_PARAMETERS}" "pgbouncer.ini"
 load_config "disable_pqexec" "${PGBOUNCER_DISABLE_PQEXEC}" "pgbouncer.ini"
 load_config "application_name_add_host" "${PGBOUNCER_APPLICATION_NAME_ADD_HOST}" "pgbouncer.ini"
-load_config "conffile" "${PGBOUNCER_CONF_DIR}/pgbouncer.ini" "pgbouncer.ini"
+load_config "conffile" "${PGBOUNCER_DIR}/pgbouncer.ini" "pgbouncer.ini"
 load_config "service_name" "${PGBOUNCER_SERVICE_NAME}" "pgbouncer.ini"
 load_config "job_name" "${PGBOUNCER_JOB_NAME}" "pgbouncer.ini"
 load_config "stats_period" "${PGBOUNCER_STATS_PERIOD}" "pgbouncer.ini"
@@ -107,12 +107,16 @@ load_config "tcp_keepcnt" "${PGBOUNCER_TCP_KEEPCNT}" "pgbouncer.ini"
 load_config "tcp_keepidle" "${PGBOUNCER_TCP_KEEPIDLE}" "pgbouncer.ini"
 load_config "tcp_keepintvl" "${PGBOUNCER_TCP_KEEPINTVL}" "pgbouncer.ini"
 
+if [[ "${PGBOUNCER_USER_AUTH_FILE}" != "NULL"]]; then
+  printf "${PGBOUNCER_USER_AUTH_FILE}" "pgbouncer_users.txt"
+fi
+
 if [[ "${PGBOUNCER_DATABASES}" != "NULL" ]]; then
-  printf "\n[databases]\n" >> "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
-  load_user_or_db "${PGBOUNCER_DATABASES}" "pgbouncer.ini"
+  printf "\n[databases]\n" >> "${PGBOUNCER_DIR}/pgbouncer.ini"
+  load_env "${PGBOUNCER_DATABASES}" "pgbouncer.ini"
 fi
 
 if [[ "${PGBOUNCER_USERS}" != "NULL" ]]; then
-  printf "\n[users]\n" >> "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
-  load_user_or_db "${PGBOUNCER_USERS}" "pgbouncer.ini"
+  printf "\n[users]\n" >> "${PGBOUNCER_DIR}/pgbouncer.ini"
+  load_env "${PGBOUNCER_DATABASES}" "pgbouncer.ini"
 fi

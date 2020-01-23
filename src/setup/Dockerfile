@@ -5,20 +5,18 @@ ARG PGBOUNCER_DOWNLOAD_LINK="https://www.pgbouncer.org/downloads/files/${PGBOUNC
 
 MAINTAINER Mutlu Polatcan <mutlupolatcan@gmail.com>
 
-ENV PGBOUNCER_CONF_DIR="/pgbouncer_conf" \
+ENV PGBOUNCER_DIR="/pgbouncer" \
     PGBOUNCER_DATABASES="NULL" \
     PGBOUNCER_USERS="NULL" \
-	PGBOUNCER_LOGFILE="NULL" \
-	PGBOUNCER_PIDFILE="NULL" \
+    PGBOUNCER_USER_AUTH_FILE="NULL" \
 	PGBOUNCER_LISTEN_ADDR="*" \
 	PGBOUNCER_LISTEN_PORT="5432" \
 	PGBOUNCER_UNIX_SOCKET_DIR="/tmp" \
 	PGBOUNCER_UNIX_SOCKET_MODE="0777" \
 	PGBOUNCER_UNIX_SOCKET_GROUP="NULL" \
 	PGBOUNCER_USER="NULL" \
-	PGBOUNCER_AUTH_FILE="NULL" \
 	PGBOUNCER_AUTH_HBA_FILE="NULL" \
-	PGBOUNCER_AUTH_TYPE="NULL" \
+	PGBOUNCER_AUTH_TYPE="md5" \
 	PGBOUNCER_AUTH_QUERY="SELECT username, passwd FROM pg_shadow WHERE username=$1" \
 	PGBOUNCER_AUTH_USER="NULL" \
 	PGBOUNCER_POOL_MODE="session" \
@@ -109,9 +107,8 @@ RUN addgroup pgbouncer && adduser --disabled-password --gecos "" --ingroup pgbou
     make -f pgbouncer-${PGBOUNCER_VERSION}/Makefile && \
     make -f pgbouncer-${PGBOUNCER_VERSION}/Makefile install && \
     rm -r pgbouncer-${PGBOUNCER_VERSION}.* && \
-    mkdir -p ${PGBOUNCER_CONF_DIR} && \
+    mkdir -p ${PGBOUNCER_DIR} && \
     chmod +x pgbouncer_config_loader.sh pgbouncer_entrypoint.sh && \
-    chown -R pgbouncer:pgbouncer ${PGBOUNCER_CONF_DIR} pgbouncer_config_loader.sh pgbouncer_entrypoint.sh
+    chown -R pgbouncer:pgbouncer ${PGBOUNCER_DIR} pgbouncer_config_loader.sh pgbouncer_entrypoint.sh
 
-USER pgbouncer
 ENTRYPOINT ["./pgbouncer_entrypoint.sh"]

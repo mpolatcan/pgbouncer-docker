@@ -21,7 +21,7 @@ function load_env() {
 }
 
 
-printf "\n[pgbouncer]\n" > "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
+printf "\n[pgbouncer]\n" > "${PGBOUNCER_DIR}/pgbouncer.ini"
 load_config "logfile" "${PGBOUNCER_DIR}/pgbouncer.log" "pgbouncer.ini"
 load_config "pidfile" "${PGBOUNCER_DIR}/pgbouncer.dir" "pgbouncer.ini"
 load_config "listen_addr" "${PGBOUNCER_LISTEN_ADDR}" "pgbouncer.ini"

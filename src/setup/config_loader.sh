@@ -111,7 +111,7 @@ if [[ "${PGBOUNCER_DATABASES}" != "NULL" ]]; then
   printf "\n[databases]\n" >> "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
 
   for DATABASE in ${PGBOUNCER_DATABASES[@]}; do
-    load_user_or_db $DATABASE "pgbouncer.ini"
+    load_user_or_db "$DATABASE" "pgbouncer.ini"
   done
 fi
 
@@ -119,6 +119,6 @@ if [[ "${PGBOUNCER_USERS}" != "NULL" ]]; then
   printf "\n[users]\n" >> "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
 
   for USER in ${PGBOUNCER_USERS[@]}; do
-    load_user_or_db $USER "pgbouncer.ini"
+    load_user_or_db "$USER" "pgbouncer.ini"
   done
 fi

@@ -14,7 +14,8 @@ dockerfile_template: |
   ADD config_loader.sh ./pgbouncer_config_loader.sh
   ADD entrypoint.sh ./pgbouncer_entrypoint.sh
 
-  RUN apt-get update && \
+  RUN addgroup pgbouncer && adduser --disabled-password --gecos "" --ingroup pgbouncer pgbouncer && \
+      apt-get update && \
       apt-get -y install wget \
                          build-essential \
                          pkg-config \
@@ -28,7 +29,8 @@ dockerfile_template: |
       make -f pgbouncer-${{PGBOUNCER_VERSION}}/Makefile install && \
       rm -r pgbouncer-${{PGBOUNCER_VERSION}}.* && \
       mkdir -p ${{PGBOUNCER_CONF_DIR}} && \
-      chmod +x pgbouncer_config_loader.sh pgbouncer_entrypoint.sh
+      chmod +x pgbouncer_config_loader.sh pgbouncer_entrypoint.sh && \
+      chown pgbouncer:pgbouncer pgbouncer_config_loader.sh pgbouncer_entrypoint.sh
 
   ENTRYPOINT ["./pgbouncer_entrypoint.sh"]
 

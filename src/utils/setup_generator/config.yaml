@@ -6,11 +6,14 @@ dockerfile_template: |
 
   MAINTAINER Mutlu Polatcan <mutlupolatcan@gmail.com>
 
-  ENV PGBOUNCER_DIR="/pgbouncer" \
+  ENV PGBOUNCER_HOME="/home/pgbouncer"
+  ENV PGBOUNCER_DIR="${{PGBOUNCER_HOME}}/pgbouncer" \
       PGBOUNCER_DATABASES="NULL" \
       PGBOUNCER_USERS="NULL" \
       PGBOUNCER_USER_AUTH_FILE="NULL" \
   {env_vars}
+
+  WORKDIR ${{PGBOUNCER_HOME}}
 
   ADD config_loader.sh ./pgbouncer_config_loader.sh
   ADD entrypoint.sh ./pgbouncer_entrypoint.sh

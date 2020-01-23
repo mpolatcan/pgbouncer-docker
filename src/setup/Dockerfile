@@ -5,7 +5,8 @@ ARG PGBOUNCER_DOWNLOAD_LINK="https://www.pgbouncer.org/downloads/files/${PGBOUNC
 
 MAINTAINER Mutlu Polatcan <mutlupolatcan@gmail.com>
 
-ENV PGBOUNCER_DIR="/pgbouncer" \
+ENV PGBOUNCER_HOME="/home/pgbouncer"
+ENV PGBOUNCER_DIR="${PGBOUNCER_HOME}/pgbouncer" \
     PGBOUNCER_DATABASES="NULL" \
     PGBOUNCER_USERS="NULL" \
     PGBOUNCER_USER_AUTH_FILE="NULL" \
@@ -89,6 +90,8 @@ ENV PGBOUNCER_DIR="/pgbouncer" \
 	PGBOUNCER_TCP_KEEPCNT="NULL" \
 	PGBOUNCER_TCP_KEEPIDLE="NULL" \
 	PGBOUNCER_TCP_KEEPINTVL="NULL"
+
+WORKDIR ${PGBOUNCER_HOME}
 
 ADD config_loader.sh ./pgbouncer_config_loader.sh
 ADD entrypoint.sh ./pgbouncer_entrypoint.sh

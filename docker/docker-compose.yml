@@ -1,0 +1,23 @@
+# Written by Mutlu Polatcan
+# 23.01.2020
+# ------------------------
+version: "3"
+services:
+  pgbouncer:
+    image: mpolatcan/pgbouncer:1.12.0
+    container_name: pgbouncer
+    hostname: pgbouncer
+    environment:
+      PGBOUNCER_DATABASES: |
+        postgres = host=postgres port=5432 user=postgres password=postgres
+
+    ports:
+      - 5432:5432
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    hostname: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres

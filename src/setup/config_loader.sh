@@ -16,6 +16,10 @@ function load_config_with_opt() {
     fi
 }
 
+function load_user_or_db() {
+    printf "$1" >> "${PGBOUNCER_CONF_DIR}/$2"
+}
+
 
 printf "\n[pgbouncer]\n" > "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
 load_config "logfile" "${PGBOUNCER_LOGFILE}" "pgbouncer.ini"
@@ -103,22 +107,18 @@ load_config "tcp_keepcnt" "${PGBOUNCER_TCP_KEEPCNT}" "pgbouncer.ini"
 load_config "tcp_keepidle" "${PGBOUNCER_TCP_KEEPIDLE}" "pgbouncer.ini"
 load_config "tcp_keepintvl" "${PGBOUNCER_TCP_KEEPINTVL}" "pgbouncer.ini"
 
-printf "\n[databases]\n" >> "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
-load_config "dbname" "${DATABASES_DBNAME}" "pgbouncer.ini"
-load_config "host" "${DATABASES_HOST}" "pgbouncer.ini"
-load_config "port" "${DATABASES_PORT}" "pgbouncer.ini"
-load_config "user" "${DATABASES_USER}" "pgbouncer.ini"
-load_config "password" "${DATABASES_PASSWORD}" "pgbouncer.ini"
-load_config "auth_user" "${DATABASES_AUTH_USER}" "pgbouncer.ini"
-load_config "pool_size" "${DATABASES_POOL_SIZE}" "pgbouncer.ini"
-load_config "reserve_pool" "${DATABASES_RESERVE_POOL}" "pgbouncer.ini"
-load_config "connect_query" "${DATABASES_CONNECT_QUERY}" "pgbouncer.ini"
-load_config "pool_mode" "${DATABASES_POOL_MODE}" "pgbouncer.ini"
-load_config "max_db_connections" "${DATABASES_MAX_DB_CONNECTIONS}" "pgbouncer.ini"
-load_config "client_encoding" "${DATABASES_CLIENT_ENCODING}" "pgbouncer.ini"
-load_config "datestyle" "${DATABASES_DATESTYLE}" "pgbouncer.ini"
-load_config "timezone" "${DATABASES_TIMEZONE}" "pgbouncer.ini"
+if [[ "${PGBOUNCER_DATABASES}" != "NULL" ]]; then
+  printf "\n[databases]\n" >> "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
 
-printf "\n[users]\n" >> "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
-load_config "pool_mode" "${USERS_POOL_MODE}" "pgbouncer.ini"
-load_config "max_user_connections" "${USERS_MAX_USER_CONNECTIONS}" "pgbouncer.ini"
+  for DATABASE in ${PGBOUNCER_DATABASES[@]}; do
+    load_user_or_db $DATABASE "pgbouncer.ini"
+  done
+fi
+
+if [[ "${PGBOUNCER_USERS}" != "NULL" ]]; then
+  printf "\n[users]\n" >> "${PGBOUNCER_CONF_DIR}/pgbouncer.ini"
+
+  for USER in ${PGBOUNCER_USERS[@]}; do
+    load_user_or_db $USER "pgbouncer.ini"
+  done
+fi

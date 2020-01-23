@@ -2,7 +2,7 @@
   logfile: "NULL"
   pidfile: "NULL"
   listen_addr: "*"
-  listen_port: "6432"
+  listen_port: "5432"
   unix_socket_dir: "/tmp"
   unix_socket_mode: "0777"
   unix_socket_group: "NULL"
@@ -83,23 +83,3 @@
   tcp_keepcnt: "NULL"
   tcp_keepidle: "NULL"
   tcp_keepintvl: "NULL"
-
-<databases>:
-  dbname: "NULL"
-  host: "NULL"
-  port: "5432"
-  user: "NULL"
-  password: "NULL"
-  auth_user: "NULL"
-  pool_size: "NULL"
-  reserve_pool: "NULL"
-  connect_query: "NULL"
-  pool_mode: "NULL"
-  max_db_connections: "NULL"
-  client_encoding: "NULL"
-  datestyle: "NULL"
-  timezone: "NULL"
-
-<users>:
-  pool_mode: "NULL"
-  max_user_connections: "NULL"

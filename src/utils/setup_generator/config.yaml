@@ -7,6 +7,8 @@ dockerfile_template: |
   MAINTAINER Mutlu Polatcan <mutlupolatcan@gmail.com>
 
   ENV PGBOUNCER_CONF_DIR="/pgbouncer_conf" \
+      PGBOUNCER_DATABASES="NULL" \
+      PGBOUNCER_USERS="NULL" \
   {env_vars}
 
   ADD config_loader.sh ./pgbouncer_config_loader.sh
@@ -48,7 +50,27 @@ config_loader_sh_template: |
       fi
   }}
 
+  function load_user_or_db() {{
+      printf "$1" >> "${{PGBOUNCER_CONF_DIR}}/$2"
+  }}
+
   {load_fn_calls}
+
+  if [[ "${{PGBOUNCER_DATABASES}}" != "NULL" ]]; then
+    printf "\n[databases]\n" >> "${{PGBOUNCER_CONF_DIR}}/pgbouncer.ini"
+
+    for DATABASE in ${{PGBOUNCER_DATABASES[@]}}; do
+      load_user_or_db $DATABASE "pgbouncer.ini"
+    done
+  fi
+
+  if [[ "${{PGBOUNCER_USERS}}" != "NULL" ]]; then
+    printf "\n[users]\n" >> "${{PGBOUNCER_CONF_DIR}}/pgbouncer.ini"
+
+    for USER in ${{PGBOUNCER_USERS[@]}}; do
+      load_user_or_db $USER "pgbouncer.ini"
+    done
+  fi
 
 config_files:
   - path: pgbouncer_configs/pgbouncer_ini.yml

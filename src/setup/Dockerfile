@@ -103,12 +103,13 @@ RUN addgroup pgbouncer && adduser --disabled-password --gecos "" --ingroup pgbou
     rm -rf /var/lib/apt/lists/* && \
     wget ${PGBOUNCER_DOWNLOAD_LINK} && \
     tar xvzf pgbouncer-${PGBOUNCER_VERSION}.tar.gz && \
-    pgbouncer-${PGBOUNCER_VERSION}/configure --prefix=/usr/local && \
-    make -f pgbouncer-${PGBOUNCER_VERSION}/Makefile && \
-    make -f pgbouncer-${PGBOUNCER_VERSION}/Makefile install && \
+    cd pgbouncer-${PGBOUNCER_VERSION} && \
+    ./configure --prefix=/usr/local && make && make install && \
+    cd ../ && \
     rm -r pgbouncer-${PGBOUNCER_VERSION}.* && \
     mkdir -p ${PGBOUNCER_DIR} && \
     chmod +x pgbouncer_config_loader.sh pgbouncer_entrypoint.sh && \
     chown -R pgbouncer:pgbouncer ${PGBOUNCER_DIR} pgbouncer_config_loader.sh pgbouncer_entrypoint.sh
 
+USER pgbouncer
 ENTRYPOINT ["./pgbouncer_entrypoint.sh"]

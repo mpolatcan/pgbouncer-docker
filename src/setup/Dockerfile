@@ -95,7 +95,7 @@ ENV PGBOUNCER_CONF_DIR="/pgbouncer_conf" \
 ADD config_loader.sh ./pgbouncer_config_loader.sh
 ADD entrypoint.sh ./pgbouncer_entrypoint.sh
 
-RUN addgroup pgbouncer && adduser --disabled-password --gecos "" --ingroup root pgbouncer && \
+RUN addgroup pgbouncer && adduser --disabled-password --gecos "" --ingroup pgbouncer pgbouncer && \
     apt-get update && \
     apt-get -y install wget \
                        build-essential \
@@ -111,7 +111,7 @@ RUN addgroup pgbouncer && adduser --disabled-password --gecos "" --ingroup root 
     rm -r pgbouncer-${PGBOUNCER_VERSION}.* && \
     mkdir -p ${PGBOUNCER_CONF_DIR} && \
     chmod +x pgbouncer_config_loader.sh pgbouncer_entrypoint.sh && \
-    chown pgbouncer:pgbouncer pgbouncer_config_loader.sh pgbouncer_entrypoint.sh
+    chown -R pgbouncer:pgbouncer ${PGBOUNCER_CONF_DIR} pgbouncer_config_loader.sh pgbouncer_entrypoint.sh
 
 USER pgbouncer
 ENTRYPOINT ["./pgbouncer_entrypoint.sh"]

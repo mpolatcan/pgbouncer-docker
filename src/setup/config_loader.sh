@@ -108,7 +108,7 @@ load_config "tcp_keepidle" "${PGBOUNCER_TCP_KEEPIDLE}" "pgbouncer.ini"
 load_config "tcp_keepintvl" "${PGBOUNCER_TCP_KEEPINTVL}" "pgbouncer.ini"
 
 if [[ "${PGBOUNCER_USER_AUTH_FILE}" != "NULL"]]; then
-  printf "${PGBOUNCER_USER_AUTH_FILE}" "pgbouncer_users.txt"
+  load_env "${PGBOUNCER_USER_AUTH_FILE}" "pgbouncer_users.txt"
 fi
 
 if [[ "${PGBOUNCER_DATABASES}" != "NULL" ]]; then

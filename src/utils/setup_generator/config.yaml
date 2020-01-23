@@ -27,7 +27,8 @@ dockerfile_template: |
       make -f pgbouncer-${{PGBOUNCER_VERSION}}/Makefile && \
       make -f pgbouncer-${{PGBOUNCER_VERSION}}/Makefile install && \
       rm -r pgbouncer-${{PGBOUNCER_VERSION}}.* && \
-      mkdir -p ${{PGBOUNCER_CONF_DIR}}
+      mkdir -p ${{PGBOUNCER_CONF_DIR}} && \
+      chmod +x pgbouncer_config_loader.sh pgbouncer_entrypoint.sh
 
   ENTRYPOINT ["./pgbouncer_entrypoint.sh"]
 

@@ -10,7 +10,6 @@ services:
     environment:
       PGBOUNCER_DATABASES: |
         postgres = host=postgres port=5432 user=postgres password=postgres
-
     ports:
       - 5432:5432
 

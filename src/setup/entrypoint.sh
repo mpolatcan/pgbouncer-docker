@@ -4,3 +4,5 @@
 ./pgbouncer_config_loader.sh
 
 pgbouncer $PGBOUNCER_DIR/pgbouncer.ini
+
+tail -f /dev/null

@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
 
 function load_config() {
-    if [[ "$2" != "NULL" ]]
-        then
-            printf "$1 = $2\n" >> "${PGBOUNCER_DIR}/$3"
-    fi
+  if [[ "$2" != "NULL" ]]; then
+    printf "$1 = $2\n" >> "${PGBOUNCER_DIR}/$3"
+  fi
 }
 
 function load_env() {
-    printf "$1" >> "${PGBOUNCER_DIR}/$2"
+  printf "$1" >> "${PGBOUNCER_DIR}/$2"
 }
 
 
 printf "\n[pgbouncer]\n" > "${PGBOUNCER_DIR}/pgbouncer.ini"
 load_config "logfile" "${PGBOUNCER_DIR}/pgbouncer.log" "pgbouncer.ini"
-load_config "pidfile" "${PGBOUNCER_DIR}/pgbouncer.dir" "pgbouncer.ini"
+load_config "pidfile" "${PGBOUNCER_DIR}/pgbouncer.pid" "pgbouncer.ini"
 load_config "listen_addr" "${PGBOUNCER_LISTEN_ADDR:=*}" "pgbouncer.ini"
 load_config "listen_port" "${PGBOUNCER_LISTEN_PORT:=5432}" "pgbouncer.ini"
 load_config "unix_socket_dir" "${PGBOUNCER_UNIX_SOCKET_DIR:=/tmp}" "pgbouncer.ini"
@@ -98,16 +97,16 @@ load_config "tcp_keepcnt" "${PGBOUNCER_TCP_KEEPCNT:=NULL}" "pgbouncer.ini"
 load_config "tcp_keepidle" "${PGBOUNCER_TCP_KEEPIDLE:=NULL}" "pgbouncer.ini"
 load_config "tcp_keepintvl" "${PGBOUNCER_TCP_KEEPINTVL:=NULL}" "pgbouncer.ini"
 
-if [[ "${PGBOUNCER_USER_AUTH_FILE}" != "NULL" ]]; then
+if [[ "${PGBOUNCER_USER_AUTH_FILE:=NULL}" != "NULL" ]]; then
   load_env "${PGBOUNCER_USER_AUTH_FILE}" "pgbouncer_users.txt"
 fi
 
-if [[ "${PGBOUNCER_DATABASES}" != "NULL" ]]; then
+if [[ "${PGBOUNCER_DATABASES:=NULL}" != "NULL" ]]; then
   printf "\n[databases]\n" >> "${PGBOUNCER_DIR}/pgbouncer.ini"
   load_env "${PGBOUNCER_DATABASES}" "pgbouncer.ini"
 fi
 
-if [[ "${PGBOUNCER_USERS}" != "NULL" ]]; then
+if [[ "${PGBOUNCER_USERS:=NULL}" != "NULL" ]]; then
   printf "\n[users]\n" >> "${PGBOUNCER_DIR}/pgbouncer.ini"
-  load_env "${PGBOUNCER_DATABASES}" "pgbouncer.ini"
+  load_env "${PGBOUNCER_USERS}" "pgbouncer.ini"
 fi

@@ -1,6 +1,6 @@
 <pgbouncer>:
   logfile: "=${PGBOUNCER_DIR}/pgbouncer.log"
-  pidfile: "=${PGBOUNCER_DIR}/pgbouncer.dir"
+  pidfile: "=${PGBOUNCER_DIR}/pgbouncer.pid"
   listen_addr: "*"
   listen_port: "5432"
   unix_socket_dir: "/tmp"

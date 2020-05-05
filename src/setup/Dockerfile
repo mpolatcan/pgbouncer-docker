@@ -26,7 +26,7 @@ RUN addgroup pgbouncer && adduser --disabled-password --gecos "" --ingroup pgbou
     cd pgbouncer-${PGBOUNCER_VERSION} && \
     ./configure --prefix=/usr/local && make && make install && \
     cd ../ && \
-    rm -r pgbouncer-${PGBOUNCER_VERSION}.* && \
+    rm -r pgbouncer-${PGBOUNCER_VERSION}* && \
     mkdir -p ${PGBOUNCER_DIR} && \
     chmod +x config_loader.sh entrypoint.sh && \
     chown -R pgbouncer:pgbouncer ${PGBOUNCER_HOME}

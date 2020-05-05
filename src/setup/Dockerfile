@@ -32,4 +32,4 @@ RUN addgroup pgbouncer && adduser --disabled-password --gecos "" --ingroup pgbou
     chown -R pgbouncer:pgbouncer ${PGBOUNCER_HOME}
 
 USER pgbouncer
-ENTRYPOINT ["./pgbouncer_entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]

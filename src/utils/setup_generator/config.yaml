@@ -7,16 +7,12 @@ dockerfile_template: |
   MAINTAINER Mutlu Polatcan <mutlupolatcan@gmail.com>
 
   ENV PGBOUNCER_HOME="/home/pgbouncer"
-  ENV PGBOUNCER_DIR="${{PGBOUNCER_HOME}}/pgbouncer" \
-      PGBOUNCER_DATABASES="NULL" \
-      PGBOUNCER_USERS="NULL" \
-      PGBOUNCER_USER_AUTH_FILE="NULL" \
-  {env_vars}
+  ENV PGBOUNCER_DIR="${{PGBOUNCER_HOME}}/pgbouncer"
 
   WORKDIR ${{PGBOUNCER_HOME}}
 
-  ADD config_loader.sh ./pgbouncer_config_loader.sh
-  ADD entrypoint.sh ./pgbouncer_entrypoint.sh
+  ADD config_loader.sh .
+  ADD entrypoint.sh .
 
   RUN addgroup pgbouncer && adduser --disabled-password --gecos "" --ingroup pgbouncer pgbouncer && \
       apt-get update && \
@@ -33,8 +29,8 @@ dockerfile_template: |
       cd ../ && \
       rm -r pgbouncer-${{PGBOUNCER_VERSION}}.* && \
       mkdir -p ${{PGBOUNCER_DIR}} && \
-      chmod +x pgbouncer_config_loader.sh pgbouncer_entrypoint.sh && \
-      chown -R pgbouncer:pgbouncer ${{PGBOUNCER_DIR}} pgbouncer_config_loader.sh pgbouncer_entrypoint.sh
+      chmod +x config_loader.sh entrypoint.sh && \
+      chown -R pgbouncer:pgbouncer ${{PGBOUNCER_HOME}}
 
   USER pgbouncer
   ENTRYPOINT ["./pgbouncer_entrypoint.sh"]
@@ -46,15 +42,6 @@ config_loader_sh_template: |
       if [[ "$2" != "NULL" ]]
           then
               printf "$1 = $2\n" >> "${{PGBOUNCER_DIR}}/$3"
-      fi
-  }}
-
-  function load_config_with_opt() {{
-      if [[ "$2" != "NULL" ]]
-          then
-              printf "$1 = $3\n" >> "${{PGBOUNCER_DIR}}/$5"
-      else
-          printf "$1 = $4\n" >> "${{PGBOUNCER_DIR}}/$5"
       fi
   }}
 
